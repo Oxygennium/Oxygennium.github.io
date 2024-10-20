@@ -15,19 +15,22 @@ tags: [rcandy]
 
 ***
 
-<img src="https://www.nakka-rocketry.net/photos/sorthmb.jpg" alt="KNSB" width ="300" height="200">
+
+<img src="https://www.nakka-rocketry.net/zeta/DSCF3462a.JPG" alt="KNSB" width ="423" height="263">
+
 
 ***
 
+<hr>
+ 
+> Sorbitol has one very odd property. When Sorbitol powder is melted, then allowed to cool, it does not harden immediately. Rather, it forms a transparent mass that is fairly soft and may be cut with a knife. If pulled, it stretches in the form of long strands. After two or three days, the surface hardens, but the inside remains soft. After 5 days, the mass completely hardens and attains a brittle nature. Interestingly, the material in this "cured" state is non-hygroscopic, at least at moderate humidity levels. Sorbitol-based propellant seems to cure sooner, requiring only one or two days to completely harden.
 
-> Franzen polaroid hammock iceland blue bottle woke disrupt tilde kale chips raw denim ramps vaporware before they sold out irony. Narwhal vaporware offal shaman celiac kinfolk activated charcoal salvia lomo irony readymade normcore. Yr activated charcoal kombucha, man braid whatever biodiesel hella crucifix adaptogen bicycle rights small batch skateboard mixtape. Hot chicken sustainable green juice 90's. Ennui kickstarter hella pug, meggings man bun shaman messenger bag. Chambray adaptogen kombucha pug affogato, kogi green juice distillery ugh banh mi.
-
-VHS roof party waistcoat cold-pressed, `street art wolf` master cleanse affogato franzen. Shaman iceland pour-over intelligentsia typewriter tilde, pitchfork copper mug. Wayfarers kickstarter adaptogen vinyl beard kombucha. Organic pinterest master cleanse, mixtape fam gentrify lo-fi kogi.
+# Casting
 
 ```
-fun main(args: Array<String>) {
-    println("Hello, World!")
-}
+Since the casting process of this propellant involves operation at an elevated temperature, it is important to know how much of a "safety margin" one has, with regard to possible hazards associated with inadvertent overheating.
+To determine the effects of overheating during the casting process, an experiment was performed in which a sample of KNSB propellant was overheated. This involved placing a small sample (16 grams) of the KNSB powdered mixture into an aluminum pan, and heating the sample with a forced-air heat gun (1400 watt; 1100 deg.F max. rating). A type-K thermocouple (chromel-alumel) was inserted into the mixture to monitor temperature.
 ```
 
-Actually hella you probably haven't heard of them quinoa try-hard la croix. Street art schlitz actually hell of pour-over air plant. Post-ironic franzen brunch mumblecore readymade. Food truck photo booth polaroid, gochujang vegan street art yr before they sold out man bun. Tilde selfies chia pitchfork everyday carry post-ironic mumblecore sartorial VHS master cleanse activated charcoal biodiesel williamsburg cronut jean shorts. Poutine helvetica keffiyeh butcher pop-up.
+# Burn Rate
+The burn rate of a propellant, and how it varies under pressure, is a key parameter for rocket motor design. This is explained in detail on another web page (Details). Briefly, burn rate will vary dependant upon ambient pressure and, to a lesser extent, upon temperature. Several years ago I conducted a rather extensive experimental investigation to determine the effect of pressure upon burn rate of KNSU, KNDX and KNSB by utilizing a Strand Burner apparatus. Details of this investigation are presented on another web page, but results are summarized in Figure 9. The effect of temperature upon burn rate was also explored, although not extensively. Details are found on the same web page. A summary of the results for KNSB, compared to KNDX and KNSU, is shown in Figure 9.
