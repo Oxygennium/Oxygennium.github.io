@@ -3,20 +3,21 @@ layout: default
 ---
 
 <section id="intro">
-    <pre><div>
-    <h1 class="blinking-cursor">Oxygenium's page</h1>
-    </div></pre>
-       
+    <div class="flex-row-between">
+        <h1>Oxygenium's Experimental Rocketry Page</h1>
+        <button id="theme-toggle" onclick="modeSwitcher()">
+            <div></div>
+        </button>
     </div>
     <p>
-         <h1>Experimental Rocketry</h1>
-        <br>
-        
+      # Rockets
+      <br>
+      ### HX15 MD
     </p>
 </section>
 
-<section class="More">
-    <h3>BLOG</h3>
+<section class="posts">
+    <h3>More</h3>
     <ul>
         {% for post in site.posts %}
         <li>
