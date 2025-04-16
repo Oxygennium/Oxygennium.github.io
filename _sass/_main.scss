@@ -421,39 +421,14 @@ figcaption {
 
   #intro p {
 	font-size: 1.5rem;
-	color: white; /* Domyślny kolor tekstu - biały */
+	color: white; /* Tekst biały */
 	display: block;
 	text-align: center;
 	font-weight: 600;
 	margin-top: 1rem;
   
-	/* Animacja migania i zmiany koloru */
-	animation: flicker 5s ease-in-out infinite, glowEffect 5s 5s forwards;
-  }
-  
-  /* Nieregularne miganie jak stara świetlówka */
-  @keyframes flicker {
-	0% {
-	  color: white;
-	}
-	15% {
-	  color: #333; /* Ciemnoszary */
-	}
-	30% {
-	  color: white;
-	}
-	50% {
-	  color: #666; /* Jaśniejszy szary */
-	}
-	65% {
-	  color: white;
-	}
-	85% {
-	  color: #444; /* Inny odcień szarości */
-	}
-	100% {
-	  color: white;
-	}
+	/* Animacja stopniowego pojawiania się poświaty */
+	animation: glowEffect 5s ease-in-out forwards;
   }
   
   /* Efekt poświaty */
