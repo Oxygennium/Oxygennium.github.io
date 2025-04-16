@@ -427,8 +427,8 @@ figcaption {
 	font-weight: 600;
 	margin-top: 1rem;
   
-	/* Animacja stopniowego pojawiania się poświaty */
-	animation: glowEffect 5s ease-in-out forwards;
+	/* Animacja stopniowego pojawiania się słabszej poświaty przez 3 sekundy */
+	animation: glowEffect 3s ease-in-out forwards;
   }
   
   /* Efekt poświaty */
@@ -437,6 +437,6 @@ figcaption {
 	  text-shadow: none;
 	}
 	100% {
-	  text-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white;
+	  text-shadow: 0 0 5px white, 0 0 10px white, 0 0 15px white; /* Słabsza poświata */
 	}
   }
