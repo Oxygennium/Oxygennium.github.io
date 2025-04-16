@@ -1,3 +1,7 @@
+[build]
+  publish = "_site"
+  command = "jekyll build"
+
 [[headers]]
   for = "/*" # This defines which paths this specific [[headers]] block will cover.
   [headers.values]
