@@ -5,11 +5,12 @@ layout: default
 <section id="intro">
     <h1 class="site-title">Oxygenium's Site</h1>
     
-    <p>Rocketry, Weather balloons and other projects</p>
-  </section>
+    <p>Rockets, Weather balloons and other projects</p>
+    <h2><a href="{{ site.baseurl }}/rockets.html">My Rockets</a></h2>
+</section>
 
 <section class="posts">
-    <h3>BLOG</h3>
+    <h3>Posts</h3>
     <ul>
         {% for post in site.posts %}
         <li>
@@ -17,4 +18,3 @@ layout: default
             <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d, %Y" }}</time></li>
         {% endfor %}
     </ul>
-</section>
