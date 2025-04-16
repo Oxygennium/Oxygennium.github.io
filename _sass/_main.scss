@@ -415,12 +415,6 @@ figcaption {
   
   #intro p {
 	font-size: 1.5rem;
-	color: var(--main-text-color);
-	display: block;
-  }
-
-  #intro p {
-	font-size: 1.5rem;
 	color: white; /* Tekst biały */
 	display: block;
 	text-align: center;
@@ -437,6 +431,6 @@ figcaption {
 	  text-shadow: none;
 	}
 	100% {
-	  text-shadow: 0 0 5px white, 0 0 10px white, 0 0 15px white; /* Słabsza poświata */
+	  text-shadow: 0 0 2px white, 0 0 4px white, 0 0 6px white; /* Mniejsza poświata */
 	}
   }
