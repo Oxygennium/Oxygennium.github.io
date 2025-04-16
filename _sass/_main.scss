@@ -392,3 +392,15 @@ section {
 figcaption {
 	font-size: smaller;
 }
+@font-face {
+	font-family: 'Space Grotesk';
+	src: url('/fonts/SpaceGrotesk/SpaceGrotesk-VariableFont_wght.ttf') format('truetype');
+	font-weight: 100 700; /* Zakres wag w czcionce */
+	font-style: normal;
+	font-display: swap;
+  }
+
+  body {
+	font-family: 'Space Grotesk', sans-serif;
+	font-weight: 400;
+  }
