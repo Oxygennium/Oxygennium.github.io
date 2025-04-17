@@ -6,15 +6,18 @@ layout: default
     <h1 class="site-title">Oxygenium's Site</h1>
     
     <p>Rockets, Weather balloons and other projects</p>
-    <h2><a href="{{ site.baseurl }}/rockets/">My Rockets</a></h2>
+    <h2>>My Rockets</h2>
 </section>
 
 <section class="posts">
     <h3>Posts</h3>
     <ul>
         {% for post in site.posts %}
-        <li>
-            <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
-            <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d, %Y" }}</time></li>
-        {% endfor %}
+        {% unless post.hidden %}
+    <li>
+      <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+      <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d, %Y" }}</time>
+    </li>
+  {% endunless %}
+{% endfor %}
     </ul>
