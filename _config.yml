@@ -2,6 +2,7 @@ site: Oxygen
 url: #yoururl
 title: Oxygen
 description: Site
+googlewebfonts: Space+Grotesl:wght@400;500;700
 twitter:
   username: #yourusername
   card: summary
