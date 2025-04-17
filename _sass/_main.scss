@@ -41,7 +41,7 @@ html[data-theme="dark"] {
 	--dark-text-color: #eee;
 	--link-color: #df0505;
 
-	background-color: #ffffff;
+	background-color: #222222;
 
 	#theme-toggle div {
 		position: relative;
@@ -363,3 +363,21 @@ figcaption {
 	font-weight: 600;
 	margin-top: 1rem;
   }
+
+  /* Zmiana koloru tekstów w postach (zarówno dla nagłówków, jak i treści) */
+.posts {
+    color: #ff5733;  /* Nowy kolor tekstu w postach */
+}
+
+.posts a {
+    color: #ff5733;  /* Kolor linków w postach */
+    text-decoration: none;  /* Opcjonalnie, usuwa podkreślenie */
+}
+
+.posts h1, .posts h2, .posts h3, .posts h4, .posts h5 {
+    color: #ff5733;  /* Kolor nagłówków w postach */
+}
+
+.posts p {
+    color: #ff5733;  /* Kolor paragrafów w postach */
+}
