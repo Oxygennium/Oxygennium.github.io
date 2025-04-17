@@ -32,64 +32,6 @@ html {
 	transform: scale(0.8);
 }
 
-html,
-html[data-theme="light"] {
-	--very-light-text-color: rgb(236, 237, 238);
-	--light-text-color: #bbb;
-	--medium-text-color: #555;
-	--main-text-color: #ffffff;
-	--dark-text-color: #ffffff;
-	--link-color: #40e000;
-
-	background-color: #f2f2f2;
-
-	#theme-toggle div {
-		position: relative;
-		width: 24px;
-		height: 24px;
-		border-radius: 50%;
-		border: none;
-		background-color: var(--theme-ui-colors-transparent, transparent);
-		transform: scale(1);
-		transition: all 0.45s ease 0s;
-		overflow: hidden;
-		box-shadow: inset 8px -8px 0px 0px var(--theme-ui-colors-toggleIcon, #2d3748);
-
-		&::before {
-			content: "";
-			position: absolute;
-			right: -9px;
-			top: -9px;
-			height: 24px;
-			width: 24px;
-			border: none;
-			border-radius: 50%;
-			transform: translate(0px, 0px);
-			opacity: 1;
-			transition: transform 0.45s ease 0s;
-		}
-
-		&::after {
-			content: "";
-			width: 8px;
-			height: 8px;
-			border-radius: 50%;
-			margin: -4px 0px 0px -4px;
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			box-shadow: 0 -23px 0 var(--theme-ui-colors-toggleIcon, #2d3748),
-				0 23px 0 var(--theme-ui-colors-toggleIcon, #2d3748), 23px 0 0 var(--theme-ui-colors-toggleIcon, #2d3748),
-				-23px 0 0 var(--theme-ui-colors-toggleIcon, #2d3748),
-				15px 15px 0 var(--theme-ui-colors-toggleIcon, #2d3748),
-				-15px 15px 0 var(--theme-ui-colors-toggleIcon, #2d3748),
-				15px -15px 0 var(--theme-ui-colors-toggleIcon, #2d3748),
-				-15px -15px 0 var(--theme-ui-colors-toggleIcon, #2d3748);
-			transform: scale(0);
-			transition: all 0.35s ease 0s;
-		}
-	}
-}
 
 html[data-theme="dark"] {
 	--very-light-text-color: #333;
@@ -99,7 +41,7 @@ html[data-theme="dark"] {
 	--dark-text-color: #eee;
 	--link-color: #df0505;
 
-	background-color: #0d1117;
+	background-color: #ffffff;
 
 	#theme-toggle div {
 		position: relative;
