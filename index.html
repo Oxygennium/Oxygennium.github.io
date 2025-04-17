@@ -2,22 +2,29 @@
 layout: default
 ---
 
+<style>
+  .center-text {
+      text-align: center;
+  }
+</style>
+
 <section id="intro">
-    <h1 class="site-title">Oxygenium's Site</h1>
-    
-    <p>Rockets, Weather balloons and other projects</p>
-    <h2><a href="https://oxygennium.github.io/2024/04/17/my-rockets">My Rockets</a></h2>
+  <h1 class="site-title">Oxygenium's Site</h1>
+  
+  <p>Rockets, Weather balloons and other projects</p>
+  <h2 class="center-text"><a href="https://oxygennium.github.io/2024/04/17/my-rockets">My Rockets</a></h2>
 </section>
 
 <section class="posts">
-    <h3>Posts</h3>
-    <ul>
-        {% for post in site.posts %}
-        {% unless post.hidden %}
-    <li>
-      <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
-      <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d, %Y" }}</time>
-    </li>
-  {% endunless %}
+  <h3>Posts</h3>
+  <ul>
+      {% for post in site.posts %}
+      {% unless post.hidden %}
+  <li>
+    <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+    <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d, %Y" }}</time>
+  </li>
+{% endunless %}
 {% endfor %}
-    </ul>
+  </ul>
+</section>
