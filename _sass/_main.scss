@@ -394,7 +394,6 @@ figcaption {
 
 h1 {
 	font-size: 2.5rem;
-	font-family: 'Space Grotesk', sans-serif;
 }
 
 @font-face {
@@ -403,4 +402,8 @@ h1 {
 	font-weight: 100 700; /* zakres wag */
 	font-style: normal;
 	font-display: swap;
+  }
+
+  body {
+	font-family: 'Space Grotesk', sans-serif;
   }
