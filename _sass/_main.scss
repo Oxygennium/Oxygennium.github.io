@@ -407,3 +407,30 @@ h1 {
   body {
 	font-family: 'Space Grotesk', sans-serif;
   }
+
+  .site-title {
+	text-align: center;
+	margin: 2rem auto;
+	font-size: 5rem;
+	font-family: 'Space Grotesk', sans-serif;
+	color: #333; // ciemnoszary
+  }
+
+  @keyframes neon-fade-in {
+	0% {
+	  color: #333;
+	  text-shadow: none;
+	}
+	100% {
+	  color: #fff;
+	  text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #fff;
+	}
+  }
+  
+  .glow-on-load {
+	color: #333;
+	text-align: center;
+	font-size: 5rem;
+	font-family: 'Space Grotesk', sans-serif;
+	animation: neon-fade-in 1.5s ease-out forwards;
+  }
