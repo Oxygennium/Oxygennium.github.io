@@ -394,4 +394,13 @@ figcaption {
 
 h1 {
 	font-size: 2.5rem;
+	font-family: 'Space Grotesk', sans-serif;
 }
+
+@font-face {
+	font-family: 'Space Grotesk';
+	src: url('/fonts/SpaceGrotesk-VariableFont_wght.ttf') format('truetype');
+	font-weight: 100 700; /* zakres wag */
+	font-style: normal;
+	font-display: swap;
+  }
