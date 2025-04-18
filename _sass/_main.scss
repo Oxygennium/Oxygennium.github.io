@@ -149,7 +149,12 @@ html[data-theme="dark"] {
 	}
 }
 
-
+body {
+	font-family: "Fira Code", monospace;
+	text-rendering: optimizeLegibility;
+	line-height: 1.75;
+	color: var(--main-text-color);
+}
 
 a {
 	color: var(--link-color);
@@ -387,36 +392,3 @@ section {
 figcaption {
 	font-size: smaller;
 }
-@font-face {
-	font-family: 'Space Grotesk';
-	src: url('/fonts/SpaceGrotesk/SpaceGrotesk-VariableFont_wght.ttf') format('truetype');
-	font-weight: 100 700; /* Zakres wag w czcionce */
-	font-style: normal;
-	font-display: swap;
-  }
-
-  body {
-	font-family: 'Space Grotesk', sans-serif;
-	font-weight: 400;
-  }
-
-  .site-title {
-	font-size: 3rem;
-	text-align: center;
-	margin: 2rem auto 1rem auto;
-	font-weight: 600;
-  }
-  
-  .intro-controls {
-	display: flex;
-	justify-content: center;
-	margin-bottom: 1rem;
-  }
-  
-  #intro p {
-	font-size: 1.5rem;
-	display: block;
-	text-align: center;
-	font-weight: 600;
-	margin-top: 1rem;
-  }

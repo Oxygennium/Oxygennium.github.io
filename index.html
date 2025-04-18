@@ -3,14 +3,21 @@ layout: default
 ---
 
 <section id="intro">
-    <h1 class="site-title">Oxygenium's Site</h1>
-    
-    <p>Rockets, Weather balloons and other projects</p>
-    <h2><a href="{{ site.baseurl }}/rockets/">My Rockets</a></h2>
+    <div class="flex-row-between">
+        <h1>Hi 👋</h1>
+        <button id="theme-toggle" onclick="modeSwitcher()">
+            <div></div>
+        </button>
+    </div>
+    <p>Maecenas euismod, ante eu mollis tempus, justo tellus tempus dui, non suscipit tellus diam vel ipsum. Phasellus
+        euismod auctor <a href="#">condimentum</a>. Aenean at ex dolor. Praesent eget venenatis erat, sit amet cursus
+        nulla. Vestibulum
+        rutrum, turpis id aliquam sagittis.
+    </p>
 </section>
 
 <section class="posts">
-    <h3>Posts</h3>
+    <h3>BLOG</h3>
     <ul>
         {% for post in site.posts %}
         <li>
@@ -18,3 +25,4 @@ layout: default
             <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d, %Y" }}</time></li>
         {% endfor %}
     </ul>
+</section>
