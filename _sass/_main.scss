@@ -321,13 +321,11 @@ time {
 
 main {
 	display: flex;
-	width: 100%;
-	max-width: none;
+	max-width: 47rem;
 	margin: 0 auto;
-	padding: 1rem;
+	padding: 1rem 0.5rem;
 	flex-direction: column;
 }
-
 .github-corner:hover .octo-arm {
 	animation: octocat-wave 560ms ease-in-out;
 }
