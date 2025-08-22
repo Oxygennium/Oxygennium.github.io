@@ -421,15 +421,15 @@ h1 {
   display: flex;
   justify-content: center;
   gap: 0.4rem;
-  font-size: 3rem; /* trochę mniejsze niż tytuł */
-  font-family: 'Space Grotesk', monospace;
-  color: #ff6a00; /* neon pomarańczowy */
+  font-size: 3rem; /* mniejsze niż tytuł */
+  font-family: 'Courier New', Courier, monospace; /* typewriter vibe */
+  color: #ff6a00; /* pomarańczowy */
   text-shadow: 
     0 0 5px #ff6a00,
     0 0 10px #ff6a00,
     0 0 20px rgba(255,106,0,0.8),
     0 0 40px rgba(255,106,0,0.6);
-  margin-top: -1rem; /* lekko podciągnięte */
+  margin-top: -1rem;
 }
 
 .altimeter span {
