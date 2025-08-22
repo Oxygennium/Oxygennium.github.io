@@ -416,23 +416,3 @@ h1 {
     text-shadow: 0 0 10px rgba(255,255,255,0.6); /* delikatna poświata */
 }
 
-.altimeter {
-  display: flex;
-  justify-content: center;
-  gap: 0.4rem;
-  font-size: 3rem; /* mniejsze niż tytuł */
-  font-family: 'Courier New', Courier, monospace; /* typewriter vibe */
-  color: #ff6a00; /* pomarańczowy */
-  text-shadow: 
-    0 0 5px #ff6a00,
-    0 0 10px #ff6a00,
-    0 0 20px rgba(255,106,0,0.8),
-    0 0 40px rgba(255,106,0,0.6);
-  margin-top: -1rem;
-}
-
-.altimeter span {
-  display: inline-block;
-  width: 1.2em;
-  text-align: center;
-}
