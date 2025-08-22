@@ -6,17 +6,33 @@ layout: default
     <div class="flex-row-between">
         <h1 class="site-title glow-on-load">Oxygenium's Site</h1>    
     </div>
-    <p>
-    </p>
+    <p></p>
 </section>
 
 <section class="posts">
     <h3 style="text-align:center; font-size:1.8em;">Current Projects</h3>
     <ul>
-        {% for post in site.posts %}
+        {% for post in site.categories.current %}
         <li>
             <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
-            <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d, %Y" }}</time></li>
+            <time datetime="{{ post.date | date_to_xmlschema }}">
+                {{ post.date | date: "%b %d, %Y" }}
+            </time>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+
+<section class="posts">
+    <h3 style="text-align:center; font-size:1.8em;">Finished Projects</h3>
+    <ul>
+        {% for post in site.categories.finished %}
+        <li>
+            <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+            <time datetime="{{ post.date | date_to_xmlschema }}">
+                {{ post.date | date: "%b %d, %Y" }}
+            </time>
+        </li>
         {% endfor %}
     </ul>
 </section>
