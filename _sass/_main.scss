@@ -92,14 +92,13 @@ html[data-theme="light"] {
 }
 
 html[data-theme="dark"] {
-	--very-light-text-color: #2a2a2a;
---light-text-color: #707070;
---medium-text-color: #a0a0a0;
---main-text-color: #e0e0e0;
---dark-text-color: #f5f5f5;
---link-color: #00bfff;             /* jasny neon niebieski */
-background-color: #121212;
-
+--very-light-text-color: #242424;
+--light-text-color: #666666;
+--medium-text-color: #aaaaaa;
+--main-text-color: #f0f0f0;
+--dark-text-color: #ffffff;
+--link-color: #d4a373; /* stonowany piaskowy/beż */
+background-color: #111111;
 	#theme-toggle div {
 		position: relative;
 		width: 24px;
