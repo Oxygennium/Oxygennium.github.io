@@ -435,7 +435,7 @@ h1 {
 .image-with-text {
   display: flex;
   align-items: flex-start;   /* wyrównanie górą */
-  gap: 20px;                 /* odstęp między zdjęciem a tekstem */
+  gap: 20px;                 /* odstęp między opisem a obrazkiem */
   margin: 20px 0;
 }
 
@@ -446,7 +446,7 @@ h1 {
 }
 
 .image-description {
-  flex: 1;                   /* zajmuje resztę miejsca */
+  flex: 1;                   /* zajmuje resztę miejsca po lewej */
   color: #ddd;
   font-size: 1rem;
   line-height: 1.5;
@@ -460,7 +460,7 @@ h1 {
   }
 
   .post-image {
-    margin-bottom: 1rem;
+    margin-top: 1rem;
     max-width: 100%;
     height: auto;
   }
