@@ -465,3 +465,21 @@ h1 {
     height: auto;
   }
 }
+
+
+/* Linki postów w listach kategorii – większe i wycentrowane */
+.posts ul li a {
+    display: block;           /* blok, żeby text-align działał */
+    font-size: 1.5rem;        /* większy rozmiar tekstu */
+    text-align: center;       /* wycentrowanie */
+    font-weight: bold;        /* opcjonalnie pogrubienie */
+    margin-bottom: 0.3rem;    /* trochę odstępu od daty */
+    color: var(--link-color); /* używa koloru linków z motywu */
+}
+
+.posts ul li time {
+    display: block;           /* żeby data była pod linkiem */
+    text-align: center;       /* wycentrowanie daty */
+    font-size: 0.9rem;        /* mniejsza od linku */
+    color: var(--light-text-color);
+}
