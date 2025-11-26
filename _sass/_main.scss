@@ -465,17 +465,3 @@ h1 {
     height: auto;
   }
 }
-
-/* Tytuł posta – większy i wycentrowany */
-.post > h1.title {
-    font-size: 4rem;       /* większy rozmiar tytułu */
-    text-align: center;    /* wycentrowany */
-    margin: 2rem 0 1rem 0; /* odstępy nad i pod tytułem */
-}
-
-/* Responsywność: mniejszy tytuł na węższych ekranach */
-@media (max-width: 700px) {
-    .post > h1.title {
-        font-size: 2.5rem;
-    }
-}
