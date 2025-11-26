@@ -467,23 +467,3 @@ h1 {
 }
 
 
-/* Lista postów w kategorii – link większy i wycentrowany */
-.posts ul li {
-    text-align: center;      /* centrowanie zawartości li */
-    list-style: none;        /* usuwa kropki */
-    margin-bottom: 1rem;     /* odstęp między postami */
-}
-
-.posts ul li a {
-    font-size: 1.5rem;       /* większy tekst linku */
-    font-weight: bold;       /* opcjonalnie pogrubienie */
-    color: var(--link-color);
-    text-decoration: none;   /* usuwa podkreślenie, jeśli chcesz */
-}
-
-.posts ul li time {
-    display: block;
-    font-size: 0.9rem;
-    color: var(--light-text-color);
-    margin-top: 0.2rem;
-}
