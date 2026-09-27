@@ -412,8 +412,8 @@ h1 {
     margin: 2rem auto;
     font-size: 5rem;
     font-family: 'Space Grotesk', sans-serif;
-    color: #fff; /* biały */
-    text-shadow: 0 0 10px rgba(255,255,255,0.6); /* delikatna poświata */
+    color: #53FC18; 
+    text-shadow: 0 0 10px rgba(83,252,24,0.6);/* delikatna poświata */
 }
 
 .post-image-right{
@@ -448,7 +448,7 @@ h1 {
 
 .image-description {
   flex: 1;                   /* zajmuje resztę miejsca po lewej */
-  color: #ddd;
+  color: #53FC18;
   font-size: 1rem;
   line-height: 1.5;
 }
