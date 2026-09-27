@@ -97,7 +97,7 @@ html[data-theme="dark"] {
 --medium-text-color: #aaaaaa;
 --main-text-color: #f0f0f0;
 --dark-text-color: #ffffff;
---link-color: #d4a373; /* stonowany piaskowy/beż */
+--link-color: #41FF00; /* stonowany piaskowy/beż */
 background-color: #111111;
 	#theme-toggle div {
 		position: relative;
@@ -412,8 +412,8 @@ h1 {
     margin: 2rem auto;
     font-size: 5rem;
     font-family: 'Space Grotesk', sans-serif;
-    color: #53FC18; 
-    text-shadow: 0 0 10px rgba(83,252,24,0.6);/* delikatna poświata */
+    color: #41FF00; 
+    text-shadow: 0 0 10px rgba(65,255,0,0.6);/* delikatna poświata */
 }
 
 .post-image-right{
@@ -448,7 +448,7 @@ h1 {
 
 .image-description {
   flex: 1;                   /* zajmuje resztę miejsca po lewej */
-  color: #53FC18;
+  color: #41FF00;
   font-size: 1rem;
   line-height: 1.5;
 }
