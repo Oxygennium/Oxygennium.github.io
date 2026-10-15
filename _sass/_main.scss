@@ -435,6 +435,9 @@ h1 {
 		0 0 32px var(--accent-glow, rgba(179, 136, 255, 0.55)),
 		0 0 60px var(--accent-glow, rgba(179, 136, 255, 0.55));
 	animation: title-glow 3s ease-in-out infinite alternate;
+	background-color: transparent; /* the global * rule makes every element inherit an opaque bg */
+	position: relative;
+	z-index: 1; /* paint the glow above neighbouring elements so it isn't cut off */
 }
 
 @keyframes title-glow {
