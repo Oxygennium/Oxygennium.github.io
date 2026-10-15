@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="color-scheme" content="normal">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cloud chamber</title>
 <style>
@@ -55,7 +56,7 @@ const $=id=>document.getElementById(id);
 const cv=$('c'),ctx=cv.getContext('2d');
 const rnd=Math.random,gauss=()=>Math.sqrt(-2*Math.log(1-rnd()))*Math.cos(6.2832*rnd());
 const CH_W=18, K=2830; // chamber width (cm); px/s per unit beta in slow-motion
-let W,H,dpr,pxcm,tracks=[],bgc='#000',next=0;
+let W,H,dpr,pxcm,tracks=[],bgc='#000',next=0,transp=false,noDelta=false;
 const src={x:0,y:0},stat={a:0,bm:0,bp:0,mu:0};
 const mist=Array.from({length:6},()=>({x:rnd(),y:rnd(),r:180+rnd()*200,v:(rnd()-.5)*0.004}));
 
@@ -128,6 +129,7 @@ function genAlpha(R,x,y,th,tstart,slow){
   tr.maxd=Rpx;tracks.push(tr);
 }
 function delta(tr,x,y,th,d){
+  if(noDelta)return;
   const T=.008/(rnd()*.9+.1),dir=th+(rnd()<.5?-1:1)*(Math.PI/2+.4*gauss());
   genElectron(rnd()<.5?-1:-1,T,x,y,dir,childStart(tr,d),tr.slow,'bm');
 }
@@ -169,10 +171,10 @@ function frame(){
   while(t>=next){emit($('src').value);next+=-Math.log(1-rnd())/rate}
 
   ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1;
-  ctx.fillStyle=bgc;ctx.fillRect(0,0,W,H);
+  if(transp)ctx.clearRect(0,0,W,H);else{ctx.fillStyle=bgc;ctx.fillRect(0,0,W,H)}
 
   ctx.globalCompositeOperation='lighter';
-  for(const m of mist){
+  if(!transp)for(const m of mist){
     m.x=(m.x+m.v/60+1)%1;ctx.globalAlpha=.035;
     ctx.drawImage(sprite(COL.m),m.x*W-m.r,m.y*H-m.r,m.r*2,m.r*2);
   }
@@ -207,7 +209,7 @@ $('B').oninput=e=>$('bv').textContent=e.target.value;
 /* ---------- URL options for embedding ----------
    ?embed=1  hide UI      &p=alpha|electron|positron|muon|mixed
    &rate=1.2 events/s     &B=0.04 magnetic field (T)
-   &slow=1   slow motion  &col=1 colour-code      &bg=111111 background hex */
+   &slow=1   slow motion  &col=1 colour-code      &bg=111111|transparent  &delta=0 no delta-ray electrons */
 const Q=new URLSearchParams(location.search);
 if(Q.get('embed')){['panel','hud','scale'].forEach(i=>$(i).style.display='none')}
 if(Q.get('p'))$('src').value={alpha:'alpha',electron:'bm',positron:'bp',muon:'mu'}[Q.get('p')]||'mixed';
@@ -215,7 +217,8 @@ if(Q.get('rate')){$('rate').value=Q.get('rate');$('rv').textContent=Q.get('rate'
 if(Q.get('B')){$('B').value=Q.get('B');$('bv').textContent=Q.get('B')}
 if(Q.get('slow'))$('slow').checked=true;
 if(Q.get('col'))$('col').checked=true;
-if(Q.get('bg')){bgc='#'+Q.get('bg');document.documentElement.style.setProperty('--bg',bgc);$('vig').style.display='none'}
+noDelta=Q.get('delta')==='0';
+if(Q.get('bg')){transp=Q.get('bg')==='transparent';bgc=transp?'transparent':'#'+Q.get('bg');document.documentElement.style.setProperty('--bg',bgc);$('vig').style.display='none'}
 requestAnimationFrame(frame);
 </script>
 </body>
