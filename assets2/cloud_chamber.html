@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cloud chamber</title>
+<style>
+:root{--bg:#000;--accent:#b388ff}
+body.graphite{--bg:#202226}
+html,body{margin:0;height:100%;background:var(--bg);overflow:hidden;font:13px/1.5 'Space Grotesk',system-ui,sans-serif;color:#ccc}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block;cursor:crosshair}
+#vig{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 55%,transparent 40%,rgba(0,0,0,.7) 100%)}
+#panel{position:fixed;left:12px;top:12px;padding:10px 12px;background:rgba(10,10,12,.72);border:1px solid #333;border-radius:10px;width:230px;backdrop-filter:blur(4px)}
+#panel label{display:block;margin:6px 0 2px;color:#999}
+#panel select,#panel button{width:100%;background:#16171a;color:#ddd;border:1px solid #3a3a40;border-radius:6px;padding:4px;font:inherit}
+#panel button{margin-top:6px;cursor:pointer}
+#panel button:hover{border-color:var(--accent)}
+#panel input[type=range]{width:100%;accent-color:var(--accent)}
+.ck{display:flex!important;gap:6px;align-items:center;color:#ccc!important}
+#hud{position:fixed;right:14px;top:12px;text-align:right;color:#888;font-variant-numeric:tabular-nums}
+#scale{position:fixed;right:14px;bottom:14px;color:#888;text-align:right}
+#bar{height:3px;background:#888;margin-top:4px;margin-left:auto}
+details{margin-top:8px;color:#888;font-size:12px}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas><div id="vig"></div>
+<div id="panel">
+  <label>Source</label>
+  <select id="src">
+    <option value="mixed">Mixed + background</option>
+    <option value="alpha">&alpha; &ndash; Am-241 (5.49 MeV)</option>
+    <option value="bm">&beta;&minus; &ndash; Sr-90 / Y-90</option>
+    <option value="bp">&beta;+ &ndash; Na-22 (positrons)</option>
+    <option value="mu">Cosmic muons</option>
+  </select>
+  <label>Event rate: <span id="rv">2.5</span> /s</label>
+  <input id="rate" type="range" min="0.2" max="12" step="0.1" value="2.5">
+  <label>Magnetic field: <span id="bv">0</span> T</label>
+  <input id="B" type="range" min="0" max="0.12" step="0.005" value="0">
+  <label class="ck"><input id="slow" type="checkbox"> Slow motion (relative speeds to scale)</label>
+  <label class="ck"><input id="col" type="checkbox"> Colour-code particles</label>
+  <button id="emit">Emit one</button>
+  <button id="bg">Background: black / graphite</button>
+  <details><summary>About / simplifications</summary>
+  Particles are emitted at random positions. Tracks form instantly (real-time mode), drift and dissolve in ~1&ndash;2 s.
+  &alpha;: thick, straight, ~4 cm range, densest near the end (Bragg peak). &beta;: thin, wiggly (multiple scattering), curl up at low energy. e&minus;/e+ bend opposite ways in B. &mu;: long straight thin tracks with &delta;-rays. 2D projection; out-of-plane geometry approximated.
+  </details>
+</div>
+<div id="hud"></div>
+<div id="scale">5 cm<div id="bar"></div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const cv=$('c'),ctx=cv.getContext('2d');
+const rnd=Math.random,gauss=()=>Math.sqrt(-2*Math.log(1-rnd()))*Math.cos(6.2832*rnd());
+const CH_W=18, K=2830; // chamber width (cm); px/s per unit beta in slow-motion
+let W,H,dpr,pxcm,tracks=[],bgc='#000',next=0;
+const src={x:0,y:0},stat={a:0,bm:0,bp:0,mu:0};
+const mist=Array.from({length:6},()=>({x:rnd(),y:rnd(),r:180+rnd()*200,v:(rnd()-.5)*0.004}));
+
+function resize(){
+  dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;
+  cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+  pxcm=W/CH_W;tracks=[];
+  if(!src.x){src.x=W*.3;src.y=H*.55}
+  src.x=Math.min(src.x,W-10);src.y=Math.min(src.y,H-10);
+  $('bar').style.width=5*pxcm+'px';
+}
+addEventListener('resize',resize);resize();
+
+const COL={a:'235,244,255',bm:'150,220,255',bp:'255,190,130',mu:'210,170,255',w:'240,246,255',m:'110,125,150',h:'120,255,255'};
+const spr={};
+function sprite(c,hard){
+  const k=c+(hard?'h':'');
+  if(spr[k])return spr[k];
+  const s=document.createElement('canvas');s.width=s.height=32;
+  const g=s.getContext('2d'),gr=g.createRadialGradient(16,16,0,16,16,16);
+  if(hard){
+    gr.addColorStop(0,`rgba(${c},1)`);gr.addColorStop(.55,`rgba(${c},.9)`);
+    gr.addColorStop(.8,`rgba(${c},.3)`);gr.addColorStop(1,`rgba(${c},0)`);
+  }else{
+    gr.addColorStop(0,`rgba(${c},1)`);gr.addColorStop(.35,`rgba(${c},.45)`);gr.addColorStop(1,`rgba(${c},0)`);
+  }
+  g.fillStyle=gr;g.fillRect(0,0,32,32);return spr[k]=s;
+}
+
+function newTrack(kind,tstart,life,slow,speed){
+  return {kind,dots:[],tstart,life,slow,speed:speed||1,maxd:0};
+}
+function childStart(tr,d){return tr.slow?tr.tstart+d/tr.speed:tr.tstart}
+
+/* ---------- electrons / positrons ---------- */
+function genElectron(q,T,x,y,th,tstart,slow,kind){
+  const m=.511,B=+$('B').value,ds=2,dcm=ds/pxcm;
+  let d=0,steps=0,tr=null;
+  while(T>.004&&steps<1800){
+    const pc=Math.sqrt(T*T+2*T*m),beta=pc/(T+m);
+    if(!tr)tr=newTrack(kind,tstart,.8+rnd()*.5,slow,beta*K);
+    const S=(1.7+.15/Math.pow(T+.02,.9))*1.2e-3;            // MeV/cm in air
+    th+=2*13.6/(beta*pc)*Math.sqrt(dcm/30400)*gauss();      // multiple scattering
+    if(rnd()<dcm*.004/Math.pow(beta*pc,2))                  // rare large-angle kink
+      th+=(rnd()<.5?-1:1)*(.25+1.2*rnd()*rnd());
+    th+=q*3*B/pc*dcm;                                       // magnetic bending
+    x+=ds*Math.cos(th);y+=ds*Math.sin(th);d+=ds;T-=S*dcm;steps++;
+    if(steps>3&&(x<-30||x>W+30||y<-30||y>H+30))break;
+    if(rnd()<Math.min(1,.4*S/1.2e-3/1.9))
+      tr.dots.push({x:x+gauss()*.5,y:y+gauss()*.5,d,r:1+rnd()*.7,a:.5+.4*rnd()});
+  }
+  if(tr){tr.maxd=d;tracks.push(tr)}
+}
+function betaT(Tmax){for(;;){const u=rnd(),f=Math.sqrt(u)*(1-u)*(1-u);if(rnd()*.29<f)return u*Tmax+.002}}
+
+/* ---------- alpha ---------- */
+function genAlpha(R,x,y,th,tstart,slow){
+  const uz=(rnd()-.5),proj=Math.sqrt(1-uz*uz),Rpx=R*pxcm*proj,ds=1.2,dcm=ds/pxcm,B=+$('B').value;
+  const tr=newTrack('a',tstart,1.4+rnd()*.4,slow,.053*K);
+  const kinkAt=rnd()<.05?.4+.55*rnd():9;let kinked=false;
+  for(let d=0;d<Rpx;d+=ds){
+    const f=d/Rpx,r=(1-f)*R;
+    th+=.0012*(1+8*Math.pow(f,4))*gauss()+2*3*B/202*dcm;
+    if(!kinked&&f>kinkAt){th+=(rnd()<.5?-1:1)*(.1+.5*rnd());kinked=true}
+    x+=ds*Math.cos(th);y+=ds*Math.sin(th);
+    const S=(.9+1.6*Math.exp(-Math.pow((r-.6)/.9,2)))*(1-Math.exp(-r/.15)); // Bragg curve
+    tr.dots.push({x:x+gauss()*.25,y:y+gauss()*.25,d,r:1.6+1.4*S/2.5,a:.6,g:.1});
+    if(rnd()<dcm*.4)delta(tr,x,y,th,d);
+  }
+  tr.maxd=Rpx;tracks.push(tr);
+}
+function delta(tr,x,y,th,d){
+  const T=.008/(rnd()*.9+.1),dir=th+(rnd()<.5?-1:1)*(Math.PI/2+.4*gauss());
+  genElectron(rnd()<.5?-1:-1,T,x,y,dir,childStart(tr,d),tr.slow,'bm');
+}
+
+/* ---------- muon ---------- */
+function genMuon(x,y,th,tstart,slow){
+  const ds=3,dcm=ds/pxcm,pc=4000,B=+$('B').value;
+  const tr=newTrack('mu',tstart,1.1+rnd()*.3,slow,K);let d=0;
+  for(let s=0;s<2000;s++){
+    th+=13.6/pc*Math.sqrt(dcm/30400)*gauss()+3*B/pc*dcm;
+    x+=ds*Math.cos(th);y+=ds*Math.sin(th);d+=ds;
+    if(s>3&&(x<-30||x>W+30||y<-30||y>H+30))break;
+    if(rnd()<.36)tr.dots.push({x:x+gauss()*.5,y:y+gauss()*.5,d,r:1+rnd()*.7,a:.45+.3*rnd()});
+    if(rnd()<dcm*.2)delta(tr,x,y,th,d);
+  }
+  tr.maxd=d;tracks.push(tr);
+}
+
+/* ---------- emission ---------- */
+function emit(kind){
+  const t=performance.now()/1000,slow=$('slow').checked;
+  if(kind==='mixed'){
+    const u=rnd();
+    kind=u<.3?'alpha':u<.5?'bm':u<.7?'bp':u<.85?'mu':'radon';
+  }
+  const th=rnd()*6.2832,sx=W*(.05+.9*rnd()),sy=H*(.08+.84*rnd());
+  if(kind==='alpha'){stat.a++;genAlpha(4+.05*gauss(),sx,sy,th,t,slow)}
+  else if(kind==='radon'){stat.a++;genAlpha([4,4.7,6.9][rnd()*3|0],W*(.15+.7*rnd()),H*(.15+.7*rnd()),th,t,slow)}
+  else if(kind==='bm'){stat.bm++;genElectron(-1,betaT(rnd()<.5?.546:2.28),sx,sy,th,t,slow,'bm')}
+  else if(kind==='bp'){stat.bp++;genElectron(1,betaT(.546),sx,sy,th,t,slow,'bp')}
+  else if(kind==='mu'){stat.mu++;genMuon(rnd()*W,-5,Math.PI/2+Math.max(-1.2,Math.min(1.2,gauss()*.55)),t,slow)}
+  $('hud').innerHTML=`&alpha; ${stat.a} &middot; &beta;&minus; ${stat.bm} &middot; &beta;+ ${stat.bp} &middot; &mu; ${stat.mu}`;
+}
+
+/* ---------- main loop ---------- */
+function frame(){
+  const t=performance.now()/1000,colorOn=$('col').checked,rate=+$('rate').value;
+  if(!next||t-next>1)next=t;
+  while(t>=next){emit($('src').value);next+=-Math.log(1-rnd())/rate}
+
+  ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1;
+  ctx.fillStyle=bgc;ctx.fillRect(0,0,W,H);
+
+  ctx.globalCompositeOperation='lighter';
+  for(const m of mist){
+    m.x=(m.x+m.v/60+1)%1;ctx.globalAlpha=.035;
+    ctx.drawImage(sprite(COL.m),m.x*W-m.r,m.y*H-m.r,m.r*2,m.r*2);
+  }
+  for(let i=tracks.length-1;i>=0;i--){
+    const tr=tracks[i],age0=t-tr.tstart;
+    if(age0<0)continue;
+    if(age0-(tr.slow?tr.maxd/tr.speed:0)>tr.life){tracks.splice(i,1);continue}
+    const col=sprite(colorOn?COL[tr.kind]:COL.w,tr.kind==='a');
+    let hx=0,hy=0,head=false;
+    for(const p of tr.dots){
+      const a=tr.slow?age0-p.d/tr.speed:age0;
+      if(a<0){head=true;break}
+      const fade=Math.max(0,1-Math.pow(a/tr.life,2.2)),ap=Math.min(1,a/.05);
+      const x=p.x+a*(6*Math.sin(p.y*.011+t*.6)+3*Math.sin(p.x*.007+t*.9));
+      const y=p.y+a*(9+5*Math.sin(p.x*.009+t*.5));
+      const s=p.r*(1+(p.g||.5)*a);
+      ctx.globalAlpha=Math.min(1,p.a*fade*ap);
+      ctx.drawImage(col,x-s,y-s,s*2,s*2);
+      hx=x;hy=y;
+    }
+    if(tr.slow&&head&&hx){ctx.globalAlpha=.5;ctx.drawImage(sprite(COL.h),hx-5,hy-5,10,10)}
+  }
+  ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1;
+  requestAnimationFrame(frame);
+}
+
+/* ---------- UI ---------- */
+$('emit').onclick=()=>emit($('src').value);
+$('bg').onclick=()=>{const g=document.body.classList.toggle('graphite');bgc=g?'#202226':'#000'};
+$('rate').oninput=e=>$('rv').textContent=e.target.value;
+$('B').oninput=e=>$('bv').textContent=e.target.value;
+/* ---------- URL options for embedding ----------
+   ?embed=1  hide UI      &p=alpha|electron|positron|muon|mixed
+   &rate=1.2 events/s     &B=0.04 magnetic field (T)
+   &slow=1   slow motion  &col=1 colour-code      &bg=111111 background hex */
+const Q=new URLSearchParams(location.search);
+if(Q.get('embed')){['panel','hud','scale'].forEach(i=>$(i).style.display='none')}
+if(Q.get('p'))$('src').value={alpha:'alpha',electron:'bm',positron:'bp',muon:'mu'}[Q.get('p')]||'mixed';
+if(Q.get('rate')){$('rate').value=Q.get('rate');$('rv').textContent=Q.get('rate')}
+if(Q.get('B')){$('B').value=Q.get('B');$('bv').textContent=Q.get('B')}
+if(Q.get('slow'))$('slow').checked=true;
+if(Q.get('col'))$('col').checked=true;
+if(Q.get('bg')){bgc='#'+Q.get('bg');document.documentElement.style.setProperty('--bg',bgc);$('vig').style.display='none'}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
